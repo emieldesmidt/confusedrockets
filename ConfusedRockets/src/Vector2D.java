@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Vector2D {
-    private static int seed = 0;
+    private static Random rnd = new Random();
 
     private double mX;
     private double mY;
@@ -40,8 +40,6 @@ public class Vector2D {
 
     // Returns a new 2D unity vector pointing in a random direction
     public static Vector2D random() {
-        Random rnd = new Random();
-
         double angle = rnd.nextDouble()*2*Math.PI;
         return new Vector2D(Math.cos(angle), Math.sin(angle));
     }
