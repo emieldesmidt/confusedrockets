@@ -1,2 +1,2 @@
-- Add tests for Vector2D (critical)
 - Implement other classes (major)
+- Add tests for DNA class (minor)

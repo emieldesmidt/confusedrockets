@@ -1,5 +1,10 @@
+package ConfusedRockets;
+
 import java.util.Random;
 
+/**
+ * A two-element vector with double precision x and y coordinates
+ */
 public class Vector2D {
     private static Random rnd = new Random();
 

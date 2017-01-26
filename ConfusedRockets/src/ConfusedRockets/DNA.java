@@ -1,6 +1,7 @@
+package ConfusedRockets;
+
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Vector;
 
 /**
  * The DNA of the rockets. They represent the route that they will follow.
