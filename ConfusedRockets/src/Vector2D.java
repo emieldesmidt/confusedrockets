@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Random;
 
 public class Vector2D {
     private static Random rnd = new Random();
@@ -38,9 +38,13 @@ public class Vector2D {
         return new Vector2D(x() * magnitude, y() * magnitude);
     }
 
-    // Returns a new 2D unity vector pointing in a random direction
-    public static Vector2D random() {
+    // Returns a new 2D vector pointing in a random direction
+    public static Vector2D random(double magnitude) {
         double angle = rnd.nextDouble()*2*Math.PI;
-        return new Vector2D(Math.cos(angle), Math.sin(angle));
+        Vector2D rndVector = new Vector2D(Math.cos(angle), Math.sin(angle));
+        return rndVector.scale(magnitude);
+    }
+    public static Vector2D random() {
+        return random(1.0);
     }
 }
