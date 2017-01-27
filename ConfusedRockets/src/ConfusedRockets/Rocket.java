@@ -39,6 +39,10 @@ public class Rocket {
     return fitness;
   }
 
+  public DNA getmGenes() {
+    return mGenes;
+  }
+
   public void setFitness(double fitness) {
     this.fitness = fitness;
   }

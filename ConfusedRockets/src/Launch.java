@@ -10,5 +10,7 @@ public class Launch {
     System.out.println("Launching");
     RocketSwarm swarm = new RocketSwarm(100, 200, 10);
     swarm.evaluatePopulation();
+    swarm.breed(10);
+
   }
 }
