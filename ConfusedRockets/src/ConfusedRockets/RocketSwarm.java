@@ -37,7 +37,7 @@ public class RocketSwarm {
 
     for (int i = 0; i < size; i++) {
       DNA dna = new DNA(span, force);
-      r.add(new Rocket(0, vec, vec, vec, dna));
+      r.add(new Rocket(vec, vec, vec, dna));
     }
     return r;
   }
@@ -89,7 +89,7 @@ public class RocketSwarm {
     /**
      * Replaces the rocketStore rockets with a new generation.
      * Two rockets from the mating pool are randomly drawn and their genes are combined
-     * to create the DNA for a new rocket. 
+     * to create the DNA for a new rocket.
      */
     for (int i = 0; i < this.rocketStore.size(); i++) {
       int rndF = new Random().nextInt(matingPool.size());
@@ -104,7 +104,7 @@ public class RocketSwarm {
         System.out.println("An error occurred while breeding.");
       }
       child.mutation(mutate);
-      Rocket childRocket = new Rocket(0, vec, vec, vec, child);
+      Rocket childRocket = new Rocket(vec, vec, vec, child);
       this.rocketStore.add(i, childRocket);
     }
   }

@@ -26,9 +26,8 @@ public class Rocket {
    * @param mVelocity     the velocity of the rocket.
    * @param mGenes        the genes of the rocket.
    */
-  public Rocket(double fitness, Vector2D mPosition, Vector2D mAcceleration, Vector2D mVelocity,
+  public Rocket(Vector2D mPosition, Vector2D mAcceleration, Vector2D mVelocity,
                 DNA mGenes) {
-    this.fitness = fitness;
     this.mPosition = mPosition;
     this.mAcceleration = mAcceleration;
     this.mVelocity = mVelocity;
