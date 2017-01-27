@@ -8,7 +8,8 @@ import java.util.Random;
  */
 public class DNA implements Cloneable {
     private Vector2D[] mGenes;
-    private static Random rnd = new Random();
+
+    private static final Random rnd = new Random();
     private static final double mutationThreshold = 0.01;
 
     public DNA (Vector2D[] genes) {

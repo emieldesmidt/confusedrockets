@@ -6,10 +6,10 @@ import java.util.Random;
  * A two-element vector with double precision x and y coordinates
  */
 public class Vector2D {
-    private static Random rnd = new Random();
-
     private double mX;
     private double mY;
+
+    private static final Random rnd = new Random();
 
     public Vector2D(double x, double y) {
         mX = x;
@@ -67,7 +67,15 @@ public class Vector2D {
         return new Vector2D(x(), y()).scale(1.0/magnitude());
     }
 
-    // Returns a new 2D vector pointing in a random direction
+    public static double distance(Vector2D a, Vector2D b) {
+        return a.subtract(b).magnitude();
+    }
+
+    /**
+     * Generates a new 2D vector pointing in a random direction.
+     * @param magnitude The magnitude of the new vector
+     * @return The random vector
+     */
     public static Vector2D random(double magnitude) {
         double angle = rnd.nextDouble()*2*Math.PI;
         Vector2D rndVector = new Vector2D(Math.cos(angle), Math.sin(angle));

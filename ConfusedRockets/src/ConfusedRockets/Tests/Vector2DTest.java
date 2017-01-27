@@ -75,6 +75,13 @@ public class Vector2DTest {
         assert equal(v.normalised(), new Vector2D(1.0/Math.sqrt(5.0), 2.0/Math.sqrt(5.0)));
     }
 
+    @Test
+    public void distance() throws Exception {
+        Vector2D a = new Vector2D(2.0, -1.0);
+        Vector2D b = new Vector2D(3.0, 1.5);
+        assert equal(Vector2D.distance(a,b), Math.sqrt(7.25));
+    }
+
     private boolean equal(double a, double b) {
         return (Math.abs(a-b) < eps);
     }

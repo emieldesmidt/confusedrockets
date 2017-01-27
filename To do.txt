@@ -1,2 +1,4 @@
-- Implement other classes (major)
-- Add tests for DNA class (minor)
+- Implement other classes     (major)
+- Finish Rocket class         (major)
+- Add tests for Rocket class  (minor)
+- Add tests for DNA class     (minor)
