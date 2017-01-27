@@ -1,21 +1,42 @@
 package ConfusedRockets;
 
+import java.util.ArrayList;
+
 /**
- * Created by desmi on 27-1-2017.
+ * Created by Emiel de Smidt on 27-1-2017.
+ * RocketSwarm contains the Rocket objects
  */
 public class RocketSwarm {
-  private Rocket[] rocketStore;
-  private Rocket[] matingPool;
-  private int popSize;
+  private ArrayList<Rocket> rocketStore;
+  private ArrayList<Rocket> matingPool;
   private double maxFitness;
+
+
+  /**
+   * RocketSwarm constructor.
+   *
+   * @param size  the amount of rockets that is desired.
+   * @param span  the lifespan of the rockets.
+   * @param force the force of the rockets.
+   */
+  public RocketSwarm(int size, int span, int force) {
+    this.rocketStore = createPopulation(size, span, force);
+  }
+
 
   /**
    * Initializes a rocket population.
+   * Returns an arraylist that contains rockets.
    */
-  public void createPopulation() {
-    for (int i = 0; i < popSize; i++) {
-      rocketStore[i] = new Rocket();
+  private ArrayList<Rocket> createPopulation(int size, int span, int force) {
+    ArrayList r = new ArrayList<Rocket>();
+
+    for (int i = 0; i < size; i++) {
+      Vector2D vec = new Vector2D();
+      DNA dna = new DNA(span, force);
+      r.add(new Rocket(0, vec, vec, vec, dna));
     }
+    return r;
   }
 
   /**
@@ -33,9 +54,12 @@ public class RocketSwarm {
     }
 
     //iterates over the rockets and normalizes their fitness
-    for(Rocket i : this.rocketStore){
-      System.out.println("rocket");
+    for (Rocket i : this.rocketStore) {
+      double fit = i.getFitness() / maxFitness;
+      i.setFitness(fit);
     }
+
+    //
 
 
   }
