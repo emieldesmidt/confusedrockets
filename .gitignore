@@ -1,1 +1,35 @@
+out/
+
+# Exclude maven wrapper
+!/.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ
 .idea/
+*.iml
+*.iws
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ethumbs.db
+Desktop.ini
+
+# Eclipse
+.metadata/
+.recommenders/
+bin/
+tmp/
+.classpath
+.project
+.loadpath
+.settings/
+.recommenders
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
