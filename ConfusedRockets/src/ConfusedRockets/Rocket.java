@@ -15,12 +15,10 @@ public class Rocket {
   private Vector2D mAcceleration;
   private RocketStatus mStatus = RocketStatus.FLYING;
   private DNA mGenes;
-  private double fitness;
 
   /**
    * Rocket constructor:
    *
-   * @param fitness       the fitness of the rocket.
    * @param mPosition     the position of the rocket.
    * @param mAcceleration the acceleration of the rocket.
    * @param mVelocity     the velocity of the rocket.
@@ -34,16 +32,8 @@ public class Rocket {
     this.mGenes = mGenes;
   }
 
-  public double getFitness() {
-    return fitness;
-  }
-
-  public DNA getmGenes() {
+  public DNA getGenes() {
     return mGenes;
-  }
-
-  public void setFitness(double fitness) {
-    this.fitness = fitness;
   }
 
   private void applyForce(Vector2D v) {
@@ -57,7 +47,7 @@ public class Rocket {
    *
    * @return A metric for the fitness of the rocket
    */
-  public double fitness() {
+  public double getFitness() {
     //temporary
     Vector2D mTargetPosition = new Vector2D();
 

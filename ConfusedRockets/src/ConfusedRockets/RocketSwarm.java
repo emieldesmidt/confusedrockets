@@ -10,7 +10,6 @@ import java.util.Random;
 public class RocketSwarm {
   private ArrayList<Rocket> rocketStore;
   private ArrayList<Rocket> matingPool;
-  private double maxFitness;
   private int size;
   private Vector2D vec = new Vector2D();
 
@@ -43,37 +42,12 @@ public class RocketSwarm {
   }
 
   /**
-   * Method that is called at the end of the population's lifetime.
-   * Evaluates the individual rockets in the population.
-   */
-  public void evaluatePopulation() {
-
-    //find the maximum fitness level that is present in the population
-    for (Rocket r : this.rocketStore) {
-      double fit = r.fitness();
-      if (fit > maxFitness) {
-        maxFitness = fit;
-      }
-    }
-
-    //iterates over the rockets and normalizes their fitness
-    for (Rocket r : this.rocketStore) {
-      double fit = r.getFitness() / maxFitness;
-      r.setFitness(fit);
-    }
-
-    //
-
-
-  }
-
-  /**
    * Method that replaces the current population with a new generation.
    * @param mutate weight of the mutation factor.
    */
   public void breed(int mutate) {
 
-    /**
+    /*
      * Replaces the mating pool with new rockets.
      * Rockets with the highest fitness levels will be present significantly more often.
      */
@@ -86,7 +60,7 @@ public class RocketSwarm {
       }
     }
 
-    /**
+    /*
      * Replaces the rocketStore rockets with a new generation.
      * Two rockets from the mating pool are randomly drawn and their genes are combined
      * to create the DNA for a new rocket.
@@ -94,14 +68,14 @@ public class RocketSwarm {
     for (int i = 0; i < this.rocketStore.size(); i++) {
       int rndF = new Random().nextInt(matingPool.size());
       int rndM = new Random().nextInt(matingPool.size());
-      DNA father = matingPool.get(rndF).getmGenes();
-      DNA mother = matingPool.get(rndM).getmGenes();
+      DNA father = matingPool.get(rndF).getGenes();
+      DNA mother = matingPool.get(rndM).getGenes();
       //sex
       DNA child = null;
       try {
-        child = father.crossover(mother);
+          child = father.crossover(mother);
       } catch (CrossoverException e) {
-        System.out.println("An error occurred while breeding.");
+          System.out.println("An error occurred while breeding.");
       }
       child.mutation(mutate);
       Rocket childRocket = new Rocket(vec, vec, vec, child);
