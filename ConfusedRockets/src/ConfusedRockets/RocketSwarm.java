@@ -45,7 +45,7 @@ public class RocketSwarm {
    * Method that replaces the current population with a new generation.
    * @param mutate weight of the mutation factor.
    */
-  public void breed(int mutate) {
+  public void breed(double mutate) {
 
     /*
      * Replaces the mating pool with new rockets.
