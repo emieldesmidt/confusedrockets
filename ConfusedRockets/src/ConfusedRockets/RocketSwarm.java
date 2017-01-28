@@ -78,7 +78,7 @@ public class RocketSwarm {
       }
       DNA bornChild = embryo.mutation(mutate);
       Rocket childRocket = new Rocket(vec, vec, vec, bornChild);
-      this.rocketStore.add(i, childRocket);
+      this.rocketStore.set(i, childRocket);
     }
   }
 }
