@@ -11,6 +11,7 @@ public class RocketSwarm {
   private ArrayList<Rocket> rocketStore;
   private ArrayList<Rocket> matingPool;
   private int size;
+  private int span;
   private Vector2D vec = new Vector2D();
 
 
@@ -24,8 +25,12 @@ public class RocketSwarm {
   public RocketSwarm(int size, int span, int force) {
     this.rocketStore = createPopulation(size, span, force);
     this.size = size;
+    this.span = span;
   }
 
+  public int getSpan() {
+    return span;
+  }
 
   /**
    * Initializes a rocket population.
@@ -43,6 +48,7 @@ public class RocketSwarm {
 
   /**
    * Method that replaces the current population with a new generation.
+   *
    * @param mutate weight of the mutation factor.
    */
   public void breed(double mutate) {
@@ -72,13 +78,20 @@ public class RocketSwarm {
       //sex
       DNA embryo = null;
       try {
-          embryo = father.crossover(mother);
+        embryo = father.crossover(mother);
       } catch (CrossoverException e) {
-          System.out.println("An error occurred while breeding.");
+        System.out.println("An error occurred while breeding.");
       }
       DNA bornChild = embryo.mutation(mutate);
       Rocket childRocket = new Rocket(vec, vec, vec, bornChild);
       this.rocketStore.set(i, childRocket);
+    }
+  }
+
+  //updates all the rockets
+  public void update() {
+    for (Rocket rocket : this.rocketStore) {
+      rocket.update();
     }
   }
 }
