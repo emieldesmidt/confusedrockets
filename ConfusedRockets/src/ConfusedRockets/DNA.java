@@ -18,7 +18,9 @@ public class DNA implements Cloneable {
     public DNA (int lifeSpan, double maxForce) {
         // Create a new set of randomised genes (2D vectors)
         mGenes = new Vector2D[10*lifeSpan];
-        Arrays.stream(mGenes).map(u -> Vector2D.random(maxForce));
+        for (int i = 0; i < mGenes.length; i++) {
+            mGenes[i] = Vector2D.random(maxForce);
+        }
     }
 
     public int numberOfGenes() {
