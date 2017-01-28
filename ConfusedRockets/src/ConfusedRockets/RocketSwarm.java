@@ -51,7 +51,7 @@ public class RocketSwarm {
      * Replaces the mating pool with new rockets.
      * Rockets with the highest fitness levels will be present significantly more often.
      */
-
+    matingPool = new ArrayList<Rocket>();
     for (Rocket r : this.rocketStore) {
       double n = r.getFitness() * 100;
       for (int i = 0; i < n; i++) {
