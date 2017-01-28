@@ -51,7 +51,6 @@ public class RocketSwarm {
      * Replaces the mating pool with new rockets.
      * Rockets with the highest fitness levels will be present significantly more often.
      */
-    matingPool.clear();
 
     for (Rocket r : this.rocketStore) {
       double n = r.getFitness() * 100;
@@ -71,14 +70,14 @@ public class RocketSwarm {
       DNA father = matingPool.get(rndF).getGenes();
       DNA mother = matingPool.get(rndM).getGenes();
       //sex
-      DNA child = null;
+      DNA embryo = null;
       try {
-          child = father.crossover(mother);
+          embryo = father.crossover(mother);
       } catch (CrossoverException e) {
           System.out.println("An error occurred while breeding.");
       }
-      child.mutation(mutate);
-      Rocket childRocket = new Rocket(vec, vec, vec, child);
+      DNA bornChild = embryo.mutation(mutate);
+      Rocket childRocket = new Rocket(vec, vec, vec, bornChild);
       this.rocketStore.add(i, childRocket);
     }
   }
