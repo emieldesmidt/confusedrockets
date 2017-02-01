@@ -1,5 +1,7 @@
 package ConfusedRockets;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -74,9 +76,10 @@ public class RocketSwarm {
   }
 
   //updates all the rockets
-  public void update() {
+  public void update(GraphicsContext gc) {
     for (Rocket rocket : this.rocketStore) {
-      rocket.update();
+      //rocket.update();
+      rocket.draw(gc);
     }
   }
 }

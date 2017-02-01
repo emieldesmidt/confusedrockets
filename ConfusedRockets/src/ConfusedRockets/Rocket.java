@@ -1,5 +1,7 @@
 package ConfusedRockets;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -88,4 +90,11 @@ public class Rocket {
   public void update() {
     throw new NotImplementedException();
   }
+
+  //Draw the rocket on the canvas
+  public void draw(GraphicsContext gc) {
+    gc.setFill(Color.BLACK);
+    gc.fillRect(this.mPosition.x(), this.mPosition.y(), 5, 10);
+  }
 }
+
