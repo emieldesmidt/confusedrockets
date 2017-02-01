@@ -70,11 +70,12 @@ public class DNA implements Cloneable {
      * mutation threshold, then randomise that gene.
      * @return The new (possible randomised) DNA
      */
-    public DNA mutation(double maxForce) {
+    public DNA mutation() {
         Vector2D[] newGenes = mGenes.clone();
 
         for (int i = 0; i < numberOfGenes(); i++) {
             if (rnd.nextDouble() < mutationThreshold) {
+                double maxForce = newGenes[i].magnitude();
                 newGenes[i] = Vector2D.random(maxForce);
             }
         }

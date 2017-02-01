@@ -1,18 +1,19 @@
 package ConfusedRockets;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Emiel de Smidt on 27-1-2017.
  * RocketSwarm contains the Rocket objects
  */
 public class RocketSwarm {
-  private ArrayList<Rocket> rocketStore;
-  private ArrayList<Rocket> matingPool;
-  private int size;
-  private int span;
-  private Vector2D vec = new Vector2D();
+  private List<Rocket> rocketStore;
+
+  private static final Random rnd = new Random();
 
 
   /**
@@ -23,27 +24,20 @@ public class RocketSwarm {
    * @param force the force of the rockets.
    */
   public RocketSwarm(int size, int span, int force) {
-    this.rocketStore = createPopulation(size, span, force);
-    this.size = size;
-    this.span = span;
-  }
-
-  public int getSpan() {
-    return span;
+    rocketStore = createPopulation(size, span, force);
   }
 
   /**
-   * Initializes a rocket population.
-   * Returns an arraylist that contains rockets.
+   * Initialises a rocket population.
+   * @param size The number of rockets to be included in the population
+   * @param span The lifespan of the rockets (will be the gene sequence length)
+   * @param force The magnitude of the forces which represent the rocket's DNA
+   * @return A list that contains randomly initialised rockets
    */
-  private ArrayList<Rocket> createPopulation(int size, int span, int force) {
-    ArrayList r = new ArrayList<Rocket>();
-
-    for (int i = 0; i < size; i++) {
-      DNA dna = new DNA(span, force);
-      r.add(new Rocket(vec, vec, vec, dna));
-    }
-    return r;
+  private List<Rocket> createPopulation(int size, int span, int force) {
+    return Stream.generate(() -> new Rocket(new DNA(span, force)))
+                 .limit(size)
+                 .collect(Collectors.toList());
   }
 
   /**
@@ -52,13 +46,12 @@ public class RocketSwarm {
    * @param mutate weight of the mutation factor.
    */
   public void breed(double mutate) {
-
     /*
      * Replaces the mating pool with new rockets.
      * Rockets with the highest fitness levels will be present significantly more often.
      */
-    matingPool = new ArrayList<Rocket>();
-    for (Rocket r : this.rocketStore) {
+    ArrayList<Rocket> matingPool = new ArrayList<Rocket>();
+    for (Rocket r : rocketStore) {
       double n = r.getFitness() * 100;
       for (int i = 0; i < n; i++) {
         matingPool.add(r);
@@ -70,21 +63,13 @@ public class RocketSwarm {
      * Two rockets from the mating pool are randomly drawn and their genes are combined
      * to create the DNA for a new rocket.
      */
-    for (int i = 0; i < this.rocketStore.size(); i++) {
-      int rndF = new Random().nextInt(matingPool.size());
-      int rndM = new Random().nextInt(matingPool.size());
-      DNA father = matingPool.get(rndF).getGenes();
-      DNA mother = matingPool.get(rndM).getGenes();
-      //sex
-      DNA embryo = null;
-      try {
-        embryo = father.crossover(mother);
-      } catch (CrossoverException e) {
-        System.out.println("An error occurred while breeding.");
-      }
-      DNA bornChild = embryo.mutation(mutate);
-      Rocket childRocket = new Rocket(vec, vec, vec, bornChild);
-      this.rocketStore.set(i, childRocket);
+    rocketStore.clear();
+    for (int i = 0; i < rocketStore.size(); i++) {
+      int p1 = rnd.nextInt(matingPool.size());
+      int p2 = rnd.nextInt(matingPool.size());
+      Rocket father = matingPool.get(p1);
+      Rocket mother = matingPool.get(p2);
+      rocketStore.add(father.mate(mother));
     }
   }
 

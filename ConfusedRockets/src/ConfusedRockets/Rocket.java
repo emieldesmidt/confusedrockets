@@ -32,6 +32,10 @@ public class Rocket {
     this.mGenes = mGenes;
   }
 
+  public Rocket(DNA mGenes) {
+    this(Vector2D.ZERO, Vector2D.ZERO, Vector2D.ZERO, mGenes);
+  }
+
   public DNA getGenes() {
     return mGenes;
   }
@@ -66,6 +70,19 @@ public class Rocket {
     }
 
     return fitness;
+  }
+
+  public Rocket mate(Rocket partner) {
+    DNA p1Genes = getGenes();
+    DNA p2Genes = partner.getGenes();
+    DNA childGenes = null;
+    try {
+      childGenes = p1Genes.crossover(p2Genes).mutation();
+    } catch (CrossoverException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return new Rocket(childGenes);
   }
 
   public void update() {

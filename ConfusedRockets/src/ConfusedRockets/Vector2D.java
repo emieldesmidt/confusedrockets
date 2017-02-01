@@ -24,6 +24,8 @@ public class Vector2D {
         mY = 0;
     }
 
+    public static final Vector2D ZERO = new Vector2D();
+
     // Cartesian coordinates
     public double x() {
         return mX;

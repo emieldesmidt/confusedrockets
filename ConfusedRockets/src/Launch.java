@@ -7,13 +7,15 @@ import ConfusedRockets.RocketSwarm;
 public class Launch {
 
   public static void main(String[] args) {
+    int span = 100;
+
     System.out.println("Launching");
-    RocketSwarm swarm = new RocketSwarm(100, 200, 10);
+    RocketSwarm swarm = new RocketSwarm(100, span, 10);
     int genCount = 300;
 
     for (int i = 0; i < genCount + 1; i++) {
       //animate each frame
-      for (int j = 0; j < swarm.getSpan(); j++) {
+      for (int j = 0; j < span; j++) {
         //swarm.update();
         System.out.print("Generation:  " + i + "  ( " + 100 * i / genCount + "% )");
         System.out.write('\r');
