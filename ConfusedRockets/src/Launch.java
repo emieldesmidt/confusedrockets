@@ -32,15 +32,13 @@ public class Launch extends Application {
     border.setCenter(canvas);
     GraphicsContext gc = canvas.getGraphicsContext2D();
 
+    // in the borderpane, create a toolbar.
     HBox hb = new HBox();
     hb.setSpacing(20);
     hb.setPadding(new Insets(10, 10, 10, 10));
     hb.setAlignment(Pos.BOTTOM_RIGHT);
     Button launch = new Button("Launch");
-    launch.setOnAction(e -> launch(gc));
-
-
-    TextField genCount = new TextField("generations");
+    TextField genCount = new TextField();
 
     //to ensure that the user only puts integer values.
     genCount.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -50,22 +48,32 @@ public class Launch extends Application {
     });
 
     hb.getChildren().addAll(genCount, launch);
-
     border.setBottom(hb);
 
     stage.setTitle("Drawing Operations Test");
     stage.setScene(new Scene(border));
+
+    //add event handler to the button.
+    launch.setOnAction(e -> {
+      if (!genCount.getText().isEmpty()) {
+        int genVal = Integer.parseInt(genCount.getText());
+        if (genVal > 0) {
+          launch(gc, genVal);
+        }
+      }
+    });
+
     stage.show();
-    
+
   }
 
 
-  private void launch(GraphicsContext gc) {
+  private void launch(GraphicsContext gc, int genCount) {
     int span = 100;
 
     System.out.println("Launching");
     RocketSwarm swarm = new RocketSwarm(100, span, 10);
-    int genCount = 300;
+
 
     for (int i = 0; i < genCount + 1; i++) {
       //animate each frame
