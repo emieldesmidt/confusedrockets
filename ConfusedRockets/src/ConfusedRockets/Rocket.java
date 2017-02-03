@@ -86,12 +86,11 @@ public class Rocket {
     return new Rocket(childGenes);
   }
 
-  void update() {
-    this.applyForce(this.getGenes().getGene(1));
+  void update(int count) {
+    this.applyForce(this.getGenes().getGene(count));
     this.mVelocity.add(this.mAcceleration);
     this.mPosition.add(this.mVelocity);
     this.mAcceleration.scale(0);
-    //throw new NotImplementedException();
   }
 
   //Draw the rocket on the canvas

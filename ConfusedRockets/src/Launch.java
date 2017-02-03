@@ -18,6 +18,7 @@ import javafx.stage.Stage;
  */
 public class Launch extends Application {
 
+  public int count;
 
   public static void main(String[] args) {
     launch(args);
@@ -82,20 +83,22 @@ public class Launch extends Application {
 
   /**
    * Controls the animation
-   * @param gc the canvas.
+   *
+   * @param gc       the canvas.
    * @param genCount the amount of generations that it should loop through.
-   * @param span lifespan of the rockets.
+   * @param span     lifespan of the rockets.
    */
   private void launch(GraphicsContext gc, int genCount, int span) {
-
     System.out.println("Launching");
     RocketSwarm swarm = new RocketSwarm(100, span, 10);
 
 
     for (int i = 0; i < genCount + 1; i++) {
       //animate each frame
+      count = 0;
       for (int j = 0; j < span; j++) {
-        swarm.update(gc);
+        swarm.update(gc, count);
+        count++;
       }
       //at the end of the population's lifespan, generate a new population.
       swarm.breed(0.01);
