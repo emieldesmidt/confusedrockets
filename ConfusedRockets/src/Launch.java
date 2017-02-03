@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -39,7 +40,7 @@ public class Launch extends Application {
     hb.setAlignment(Pos.BOTTOM_RIGHT);
     Button launch = new Button("Launch");
     TextField genCount = new TextField();
-
+    genCount.setPromptText("Generations");
     //to ensure that the user only puts integer values.
     genCount.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.matches("\\d*")) {
@@ -47,7 +48,16 @@ public class Launch extends Application {
       }
     });
 
-    hb.getChildren().addAll(genCount, launch);
+    TextField lifeSpan = new TextField();
+    lifeSpan.setPromptText("Life Span");
+    //to ensure that the user only puts integer values.
+    lifeSpan.textProperty().addListener((observable, oldValue, newValue) -> {
+      if (!newValue.matches("\\d*")) {
+        genCount.setText(newValue.replaceAll("[^\\d]", ""));
+      }
+    });
+
+    hb.getChildren().addAll(lifeSpan, genCount, launch);
     border.setBottom(hb);
 
     stage.setTitle("Drawing Operations Test");
@@ -55,10 +65,11 @@ public class Launch extends Application {
 
     //add event handler to the button.
     launch.setOnAction(e -> {
-      if (!genCount.getText().isEmpty()) {
+      if (!genCount.getText().isEmpty() && !lifeSpan.getText().isEmpty()) {
         int genVal = Integer.parseInt(genCount.getText());
+        int span = Integer.parseInt(lifeSpan.getText());
         if (genVal > 0) {
-          launch(gc, genVal);
+          launch(gc, genVal, span);
         }
       }
     });
@@ -68,8 +79,7 @@ public class Launch extends Application {
   }
 
 
-  private void launch(GraphicsContext gc, int genCount) {
-    int span = 100;
+  private void launch(GraphicsContext gc, int genCount, int span) {
 
     System.out.println("Launching");
     RocketSwarm swarm = new RocketSwarm(100, span, 10);
@@ -79,7 +89,6 @@ public class Launch extends Application {
       //animate each frame
       for (int j = 0; j < span; j++) {
         swarm.update(gc);
-
       }
       //at the end of the population's lifespan, generate a new population.
       swarm.breed(0.01);

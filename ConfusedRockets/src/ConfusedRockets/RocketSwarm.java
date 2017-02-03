@@ -78,7 +78,7 @@ public class RocketSwarm {
   //updates all the rockets
   public void update(GraphicsContext gc) {
     for (Rocket rocket : this.rocketStore) {
-      //rocket.update();
+      rocket.update();
       rocket.draw(gc);
     }
   }

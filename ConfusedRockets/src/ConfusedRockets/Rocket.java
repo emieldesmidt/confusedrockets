@@ -88,13 +88,16 @@ public class Rocket {
   }
 
   public void update() {
-    throw new NotImplementedException();
+    this.mVelocity.add(this.mAcceleration);
+    this.mPosition.add(this.mVelocity);
+    this.mAcceleration.scale(0);
+    //throw new NotImplementedException();
   }
 
   //Draw the rocket on the canvas
   public void draw(GraphicsContext gc) {
     gc.setFill(Color.BLACK);
-    gc.fillRect(this.mPosition.x(), this.mPosition.y(), 5, 10);
+    gc.fillRect(this.mPosition.x(), this.mPosition.y(), 5, 15);
   }
 }
 
