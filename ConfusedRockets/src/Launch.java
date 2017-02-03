@@ -1,12 +1,7 @@
 import ConfusedRockets.RocketSwarm;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,11 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.border.Border;
 import java.io.IOException;
 
 
@@ -42,9 +34,12 @@ public class Launch extends Application {
 
     HBox hb = new HBox();
     hb.setSpacing(20);
-    hb.setPadding(new Insets(10,10,10,10));
+    hb.setPadding(new Insets(10, 10, 10, 10));
     hb.setAlignment(Pos.BOTTOM_RIGHT);
     Button launch = new Button("Launch");
+    launch.setOnAction(e -> launch(gc));
+
+
     TextField genCount = new TextField("generations");
 
     //to ensure that the user only puts integer values.
@@ -61,9 +56,7 @@ public class Launch extends Application {
     stage.setTitle("Drawing Operations Test");
     stage.setScene(new Scene(border));
     stage.show();
-
-    launch(gc);
-
+    
   }
 
 
