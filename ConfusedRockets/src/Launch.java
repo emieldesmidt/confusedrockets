@@ -1,6 +1,8 @@
 import ConfusedRockets.RocketSwarm;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -36,6 +39,9 @@ public class Launch extends Application {
     GraphicsContext gc = canvas.getGraphicsContext2D();
 
     HBox hb = new HBox();
+    hb.setSpacing(20);
+    hb.setPadding(new Insets(10,10,10,10));
+    hb.setAlignment(Pos.BOTTOM_RIGHT);
     Button launch = new Button("Launch");
     TextField genCount = new TextField("generations");
     hb.getChildren().addAll(genCount, launch);
