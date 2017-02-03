@@ -6,13 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 
 /**
@@ -26,8 +23,13 @@ public class Launch extends Application {
     launch(args);
   }
 
+  /**
+   * Creates the scene.
+   *
+   * @param stage the stage
+   */
   @Override
-  public void start(Stage stage) throws IOException {
+  public void start(Stage stage) {
     BorderPane border = new BorderPane();
     Canvas canvas = new Canvas(1000, 600);
     border.setCenter(canvas);
@@ -78,7 +80,12 @@ public class Launch extends Application {
 
   }
 
-
+  /**
+   * Controls the animation
+   * @param gc the canvas.
+   * @param genCount the amount of generations that it should loop through.
+   * @param span lifespan of the rockets.
+   */
   private void launch(GraphicsContext gc, int genCount, int span) {
 
     System.out.println("Launching");

@@ -2,7 +2,6 @@ package ConfusedRockets;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Represents the rocket which will evolve until it reaches its goal. The genetic algorithm will
@@ -38,7 +37,7 @@ public class Rocket {
     this(Vector2D.ZERO, Vector2D.ZERO, Vector2D.ZERO, mGenes);
   }
 
-  public DNA getGenes() {
+  private DNA getGenes() {
     return mGenes;
   }
 
@@ -53,7 +52,7 @@ public class Rocket {
    *
    * @return A metric for the fitness of the rocket
    */
-  public double getFitness() {
+  double getFitness() {
     //temporary
     Vector2D mTargetPosition = new Vector2D();
 
@@ -74,7 +73,7 @@ public class Rocket {
     return fitness;
   }
 
-  public Rocket mate(Rocket partner) {
+  Rocket mate(Rocket partner) {
     DNA p1Genes = getGenes();
     DNA p2Genes = partner.getGenes();
     DNA childGenes = null;
@@ -87,7 +86,8 @@ public class Rocket {
     return new Rocket(childGenes);
   }
 
-  public void update() {
+  void update() {
+    this.applyForce(this.getGenes().getGene(1));
     this.mVelocity.add(this.mAcceleration);
     this.mPosition.add(this.mVelocity);
     this.mAcceleration.scale(0);
@@ -95,7 +95,7 @@ public class Rocket {
   }
 
   //Draw the rocket on the canvas
-  public void draw(GraphicsContext gc) {
+  void draw(GraphicsContext gc) {
     gc.setFill(Color.BLACK);
     gc.fillRect(this.mPosition.x(), this.mPosition.y(), 5, 15);
   }
