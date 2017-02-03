@@ -1,13 +1,19 @@
 import ConfusedRockets.RocketSwarm;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.awt.*;
+import javax.swing.border.Border;
 import java.io.IOException;
 
 
@@ -17,30 +23,30 @@ import java.io.IOException;
  */
 public class Launch extends Application {
 
-  @FXML
-  public Button Run;
-  @FXML
-  public Canvas cvs;
-
 
   public static void main(String[] args) {
     launch(args);
   }
 
   @Override
-  public void start(Stage primaryStage) throws IOException {
-    Parent splash = new FXMLLoader(getClass().getResource("window.fxml")).load();
+  public void start(Stage stage) throws IOException {
+    BorderPane border = new BorderPane();
+    Canvas canvas = new Canvas(1000, 600);
+    border.setCenter(canvas);
+    GraphicsContext gc = canvas.getGraphicsContext2D();
 
-    Scene mainScene = new Scene(splash, 1200, 800);
+    HBox hb = new HBox();
+    Button launch = new Button("Launch");
+    TextField genCount = new TextField("generations");
+    hb.getChildren().addAll(genCount, launch);
 
+    border.setBottom(hb);
 
-    primaryStage.setTitle("Confused Rockets");
-    primaryStage.setScene(mainScene);
-    primaryStage.setMinWidth(1000);
-    primaryStage.setMinHeight(700);
+    stage.setTitle("Drawing Operations Test");
+    stage.setScene(new Scene(border));
+    stage.show();
 
-
-    primaryStage.show();
+    launch(gc);
 
   }
 
