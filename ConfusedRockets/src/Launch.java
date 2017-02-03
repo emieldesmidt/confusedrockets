@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  */
 public class Launch extends Application {
 
-  public int count;
+  private int count;
 
   public static void main(String[] args) {
     launch(args);
@@ -63,7 +63,7 @@ public class Launch extends Application {
     hb.getChildren().addAll(lifeSpan, genCount, launch);
     border.setBottom(hb);
 
-    stage.setTitle("Drawing Operations Test");
+    stage.setTitle("Confused Rockets");
     stage.setScene(new Scene(border));
 
     //add event handler to the button.
