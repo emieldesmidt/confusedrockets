@@ -1,5 +1,7 @@
 import ConfusedRockets.RocketSwarm;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,6 +46,17 @@ public class Launch extends Application {
     hb.setAlignment(Pos.BOTTOM_RIGHT);
     Button launch = new Button("Launch");
     TextField genCount = new TextField("generations");
+
+    //to ensure that the user only puts integer values.
+    genCount.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        if (!newValue.matches("\\d*")) {
+          genCount.setText(newValue.replaceAll("[^\\d]", ""));
+        }
+      }
+    });
+
     hb.getChildren().addAll(genCount, launch);
 
     border.setBottom(hb);
