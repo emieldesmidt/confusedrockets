@@ -48,12 +48,9 @@ public class Launch extends Application {
     TextField genCount = new TextField("generations");
 
     //to ensure that the user only puts integer values.
-    genCount.textProperty().addListener(new ChangeListener<String>() {
-      @Override
-      public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-        if (!newValue.matches("\\d*")) {
-          genCount.setText(newValue.replaceAll("[^\\d]", ""));
-        }
+    genCount.textProperty().addListener((observable, oldValue, newValue) -> {
+      if (!newValue.matches("\\d*")) {
+        genCount.setText(newValue.replaceAll("[^\\d]", ""));
       }
     });
 
