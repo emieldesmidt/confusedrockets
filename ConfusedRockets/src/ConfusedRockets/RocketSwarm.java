@@ -71,8 +71,9 @@ public class RocketSwarm {
      * Two rockets from the mating pool are randomly drawn and their genes are combined
      * to create the DNA for a new rocket.
      */
+    int size = rocketStore.size();
     rocketStore.clear();
-    for (int i = 0; i < rocketStore.size(); i++) {
+    for (int i = 0; i < size; i++) {
       int p1 = rnd.nextInt(matingPool.size());
       int p2 = rnd.nextInt(matingPool.size());
       Rocket father = matingPool.get(p1);

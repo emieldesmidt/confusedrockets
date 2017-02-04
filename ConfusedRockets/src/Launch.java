@@ -30,7 +30,6 @@ public class Launch extends Application {
   private Circle target = new Circle();
   private Circle targetBand;
   private Label inf;
-  private int gen = 0;
   private Button launchButton;
   private double targX = 600;
   private double targY = 50;
