@@ -4,14 +4,13 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 
@@ -22,7 +21,8 @@ import javafx.stage.Stage;
 public class Launch extends Application {
 
   private Vector2D targetPos = new Vector2D();
-
+  private Pane pane;
+  private Circle target = new Circle();
 
   public static void main(String[] args) {
     launch(args);
@@ -36,18 +36,38 @@ public class Launch extends Application {
   @Override
   public void start(Stage stage) {
     BorderPane border = new BorderPane();
-    Canvas canvas = new Canvas(1000, 600);
-    border.setCenter(canvas);
-    GraphicsContext gc = canvas.getGraphicsContext2D();
+    pane = new Pane();
+    pane.setStyle("-fx-background-color: white");
+    pane.setPrefSize(1000, 600);
+    pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> createTarget(event.getX(), event.getY()));
+    border.setCenter(pane);
 
-    // in the borderpane, create a toolbar.
+    border.setBottom(createHBox());
+
+    stage.setTitle("Confused Rockets");
+    stage.setScene(new Scene(border));
+
+
+    stage.show();
+
+  }
+
+
+  /**
+   * Returns a toolbar HBox to be used in the scene.
+   *
+   * @return the toolbar HBox.
+   */
+  private HBox createHBox() {
     HBox hb = new HBox();
+    hb.setStyle("-fx-background-color: aliceblue");
     hb.setSpacing(20);
     hb.setPadding(new Insets(10, 10, 10, 10));
     hb.setAlignment(Pos.BOTTOM_RIGHT);
     Button launchButton = new Button("Launch");
     TextField genCount = new TextField();
     genCount.setPromptText("Generations");
+
     //to ensure that the user only puts integer values.
     genCount.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.matches("\\d*")) {
@@ -65,10 +85,6 @@ public class Launch extends Application {
     });
 
     hb.getChildren().addAll(lifeSpan, genCount, launchButton);
-    border.setBottom(hb);
-
-    stage.setTitle("Confused Rockets");
-    stage.setScene(new Scene(border));
 
     //add event handler to the button, and verify user input. Then launch the swarm!
     launchButton.setOnAction(e -> {
@@ -76,37 +92,29 @@ public class Launch extends Application {
         int genVal = Integer.parseInt(genCount.getText());
         int span = Integer.parseInt(lifeSpan.getText());
         if (genVal > 0) {
-          launch(gc, genVal, span);
+          launch(genVal, span);
         }
       }
     });
 
-    canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-      createTarget(gc, event.getSceneX(), event.getSceneY());
-    });
-
-
-    stage.show();
-
+    return hb;
   }
 
-
   //create a target object on the desired position.
-  private void createTarget(GraphicsContext gc, double x, double y) {
-    gc.clearRect(targetPos.x(), targetPos.y(), 12, 12);
-    gc.setFill(Color.DARKBLUE);
-    gc.fillOval(x, y, 12, 12);
+  private void createTarget(double x, double y) {
+    pane.getChildren().remove(target);
     targetPos = new Vector2D(x, y);
+    target = new Circle(targetPos.x(), targetPos.y(), 6);
+    pane.getChildren().add(target);
   }
 
   /**
    * Controls the animation
    *
-   * @param gc       the canvas.
    * @param genCount the amount of generations that it should loop through.
    * @param span     lifespan of the rockets.
-   */
-  private void launch(GraphicsContext gc, int genCount, int span) {
+   **/
+  private void launch(int genCount, int span) {
     System.out.println("Launching");
     RocketSwarm swarm = new RocketSwarm(100, span, 10);
 
@@ -115,11 +123,12 @@ public class Launch extends Application {
       //animate each frame
       int count = 0;
       for (int j = 0; j < span; j++) {
-        swarm.update(gc, count);
+        swarm.update(pane, count);
         count++;
       }
       //at the end of the population's lifespan, generate a new population.
       swarm.breed(0.01, targetPos);
     }
   }
+
 }
