@@ -34,7 +34,8 @@ public class Launch extends Application {
   private Label inf;
   private int gen = 0;
   private Button launchButton;
-
+  private double targX = 600;
+  private double targY = 50;
 
   public static void main(String[] args) {
     launch(args);
@@ -53,7 +54,7 @@ public class Launch extends Application {
 
     stage.setTitle("Confused Rockets");
     stage.setScene(new Scene(border));
-
+    createTarget();
     stage.setResizable(false);
     stage.show();
 
@@ -68,7 +69,11 @@ public class Launch extends Application {
     pane = new Pane();
     pane.setStyle("-fx-background-color: #1BBC9B");
     pane.setPrefSize(1200, 800);
-    pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> createTarget(event.getX(), event.getY()));
+    pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+      targX = event.getX();
+      targY = event.getY();
+      createTarget();
+    });
 
     //The generation stat label (left top)
     inf = new Label();
@@ -129,12 +134,12 @@ public class Launch extends Application {
   }
 
   //create a target object on the desired position.
-  private void createTarget(double x, double y) {
+  private void createTarget() {
     launchButton.setDisable(false);
     //remove the previous target
     pane.getChildren().removeAll(target, targetBand);
 
-    targetPos = new Vector2D(x, y);
+    targetPos = new Vector2D(targX, targY);
     target = new Circle(targetPos.x(), targetPos.y(), 6);
     target.setFill(Color.web("#0F6177"));
 
@@ -159,6 +164,8 @@ public class Launch extends Application {
 
     new AnimationTimer() {
 
+      //this is similar to a loop, with a maximum of 60 loops/second
+      //each loop is equivalent to a generation
       @Override
       public void handle(long now) {
 
@@ -166,14 +173,16 @@ public class Launch extends Application {
         int count = 0;
         for (int j = 0; j < span; j++) {
           //remove the old rockets, update them, draw them again.
-          pane.getChildren().removeAll(swarm.getRocketStore());
           swarm.update(pane, count);
           count++;
+
         }
         //at the end of the population's lifespan, generate a new population.
         swarm.breed(0.01, targetPos);
 
         gen++;
+
+
       }
     }.start();
   }

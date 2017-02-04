@@ -88,9 +88,9 @@ public class Rocket {
 
   void update(int count) {
     this.applyForce(this.getGenes().getGene(count));
-    this.mVelocity.add(this.mAcceleration);
-    this.mPosition.add(this.mVelocity);
-    this.mAcceleration.scale(0);
+    this.mVelocity = this.mVelocity.add(this.mAcceleration);
+    this.mPosition = this.mPosition.add(this.mVelocity);
+    this.mAcceleration = this.mAcceleration.scale(0);
   }
 
   //Draw the rocket on the canvas
