@@ -35,7 +35,7 @@ public class Rocket {
   }
 
   public Rocket(DNA mGenes) {
-    this(Vector2D.ZERO, Vector2D.ZERO, Vector2D.ZERO, mGenes);
+    this(new Vector2D(600, 800), Vector2D.ZERO, Vector2D.ZERO, mGenes);
   }
 
   private DNA getGenes() {
