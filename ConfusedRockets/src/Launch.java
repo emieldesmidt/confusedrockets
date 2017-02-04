@@ -45,7 +45,7 @@ public class Launch extends Application {
     hb.setSpacing(20);
     hb.setPadding(new Insets(10, 10, 10, 10));
     hb.setAlignment(Pos.BOTTOM_RIGHT);
-    Button launch = new Button("Launch");
+    Button launchButton = new Button("Launch");
     TextField genCount = new TextField();
     genCount.setPromptText("Generations");
     //to ensure that the user only puts integer values.
@@ -60,18 +60,18 @@ public class Launch extends Application {
     //to ensure that the user only puts integer values.
     lifeSpan.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.matches("\\d*")) {
-        genCount.setText(newValue.replaceAll("[^\\d]", ""));
+        lifeSpan.setText(newValue.replaceAll("[^\\d]", ""));
       }
     });
 
-    hb.getChildren().addAll(lifeSpan, genCount, launch);
+    hb.getChildren().addAll(lifeSpan, genCount, launchButton);
     border.setBottom(hb);
 
     stage.setTitle("Confused Rockets");
     stage.setScene(new Scene(border));
 
-    //add event handler to the button.
-    launch.setOnAction(e -> {
+    //add event handler to the button, and verify user input. Then launch the swarm!
+    launchButton.setOnAction(e -> {
       if (!genCount.getText().isEmpty() && !lifeSpan.getText().isEmpty()) {
         int genVal = Integer.parseInt(genCount.getText());
         int span = Integer.parseInt(lifeSpan.getText());
@@ -81,18 +81,22 @@ public class Launch extends Application {
       }
     });
 
-    //create a target object on the desired position.
     canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-
-      gc.clearRect(targetPos.x(), targetPos.y(), 12, 12);
-      gc.setFill(Color.DARKBLUE);
-      gc.fillOval(event.getSceneX(), event.getSceneY(), 12, 12);
-      targetPos = new Vector2D(event.getSceneX(), event.getSceneY());
-
+      createTarget(gc, event.getSceneX(), event.getSceneY());
     });
+
 
     stage.show();
 
+  }
+
+
+  //create a target object on the desired position.
+  private void createTarget(GraphicsContext gc, double x, double y) {
+    gc.clearRect(targetPos.x(), targetPos.y(), 12, 12);
+    gc.setFill(Color.DARKBLUE);
+    gc.fillOval(x, y, 12, 12);
+    targetPos = new Vector2D(x, y);
   }
 
   /**
