@@ -1,4 +1,5 @@
 import ConfusedRockets.RocketSwarm;
+import ConfusedRockets.Vector2D;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,8 +8,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -19,6 +22,8 @@ import javafx.stage.Stage;
 public class Launch extends Application {
 
   private int count;
+  private boolean targetSet = false;
+  private Vector2D targetPos = new Vector2D();
 
   public static void main(String[] args) {
     launch(args);
@@ -77,6 +82,16 @@ public class Launch extends Application {
       }
     });
 
+    //create a target object on the desired position.
+    canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+      if (!targetSet) {
+        gc.setFill(Color.DARKBLUE);
+        gc.fillOval(event.getSceneX(), event.getSceneY(), 20, 20);
+        targetPos = new Vector2D(event.getSceneX(), event.getSceneY());
+        targetSet = true;
+      }
+    });
+
     stage.show();
 
   }
@@ -101,7 +116,7 @@ public class Launch extends Application {
         count++;
       }
       //at the end of the population's lifespan, generate a new population.
-      swarm.breed(0.01);
+      swarm.breed(0.01, targetPos);
     }
   }
 }

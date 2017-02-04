@@ -52,11 +52,10 @@ public class Rocket {
    *
    * @return A metric for the fitness of the rocket
    */
-  double getFitness() {
-    //temporary
-    Vector2D mTargetPosition = new Vector2D();
+  double getFitness(Vector2D targetPos) {
 
-    double dist = Vector2D.distance(mPosition, mTargetPosition);
+
+    double dist = Vector2D.distance(mPosition, targetPos);
 
     // Turn the distance into a fitness metric
     double fitness = Math.exp(-dist);

@@ -47,14 +47,14 @@ public class RocketSwarm {
    *
    * @param mutate weight of the mutation factor.
    */
-  public void breed(double mutate) {
+  public void breed(double mutate, Vector2D targetPos) {
     /*
      * Replaces the mating pool with new rockets.
      * Rockets with the highest fitness levels will be present significantly more often.
      */
     ArrayList<Rocket> matingPool = new ArrayList<Rocket>();
     for (Rocket r : rocketStore) {
-      double n = r.getFitness() * 100;
+      double n = r.getFitness(targetPos) * 100;
       for (int i = 0; i < n; i++) {
         matingPool.add(r);
       }
