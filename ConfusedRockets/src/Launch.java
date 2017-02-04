@@ -18,8 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-import java.util.Collection;
-
 
 /**
  * Created by Emiel de Smidt on 27-1-2017.
@@ -36,6 +34,7 @@ public class Launch extends Application {
   private Button launchButton;
   private double targX = 600;
   private double targY = 50;
+  private int count = 0;
 
   public static void main(String[] args) {
     launch(args);
@@ -157,8 +156,8 @@ public class Launch extends Application {
    *
    * @param size the amount of rockets.
    * @param span lifespan of the rockets.
-   **/
-  private void launch(int size, int span) {
+
+  private void launch2(int size, int span) {
     System.out.println("Launching");
     RocketSwarm swarm = new RocketSwarm(size, span, 10);
 
@@ -185,6 +184,28 @@ public class Launch extends Application {
 
       }
     }.start();
+  }
+  **/
+
+  private void launch(int size, int span) {
+    RocketSwarm swarm = new RocketSwarm(size, span, 1);
+    AnimationTimer timer = new AnimationTimer() {
+      int t = 0;
+
+      @Override
+      public void handle(long now) {
+
+        if (t < span) {
+          for (Rocket r : swarm.getRocketStore()) {
+            r.update(count);
+            r.draw(pane);
+          }
+          t++;
+          count++;
+        }
+      }
+    };
+    timer.start();
   }
 
 }

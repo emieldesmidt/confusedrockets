@@ -86,7 +86,7 @@ public class Rocket {
     return new Rocket(childGenes);
   }
 
-  void update(int count) {
+  public void update(int count) {
     this.applyForce(this.getGenes().getGene(count));
     this.mVelocity = this.mVelocity.add(this.mAcceleration);
     this.mPosition = this.mPosition.add(this.mVelocity);
@@ -94,7 +94,7 @@ public class Rocket {
   }
 
   //Draw the rocket on the canvas
-  void draw(Pane pane) {
+  public void draw(Pane pane) {
     Rectangle rocket = new Rectangle(this.mPosition.x(), this.mPosition.y(), 3, 12);
     rocket.setFill(Color.web("#0F6177"));
     pane.getChildren().add(rocket);
