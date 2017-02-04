@@ -29,7 +29,7 @@ public class Launch extends Application {
   private Circle target = new Circle();
   private Circle targetBand;
   private Label inf;
-  private  int gen = 0;
+  private int gen = 0;
 
 
   public static void main(String[] args) {
@@ -56,7 +56,7 @@ public class Launch extends Application {
   }
 
   /**
-   * Create the canvas of the simulation.
+   * Create the pane which is to be used as the canvas of the simulation.
    *
    * @return pane.
    */
@@ -66,11 +66,13 @@ public class Launch extends Application {
     pane.setPrefSize(1200, 800);
     pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> createTarget(event.getX(), event.getY()));
 
+    //The generation stat label (left top)
     inf = new Label();
     inf.setStyle("-fx-text-fill: #16A086; -fx-font-size: 100");
     inf.setTranslateY(-20);
     inf.setTranslateX(20);
     pane.getChildren().add(inf);
+
     return pane;
   }
 
@@ -87,9 +89,9 @@ public class Launch extends Application {
     hb.setPadding(new Insets(10, 10, 10, 10));
     hb.setAlignment(Pos.BOTTOM_RIGHT);
     Button launchButton = new Button("Launch");
+
     TextField rocketCount = new TextField();
     rocketCount.setPromptText("Rockets");
-
     //to ensure that the user only puts integer values.
     rocketCount.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.matches("\\d*")) {
@@ -124,23 +126,27 @@ public class Launch extends Application {
 
   //create a target object on the desired position.
   private void createTarget(double x, double y) {
+    //remove the previous target
     pane.getChildren().removeAll(target, targetBand);
+
     targetPos = new Vector2D(x, y);
     target = new Circle(targetPos.x(), targetPos.y(), 6);
     target.setFill(Color.web("#0F6177"));
 
+    //outer ring of the target
     targetBand = new Circle(targetPos.x(), targetPos.y(), 10);
     targetBand.setFill(Color.TRANSPARENT);
     targetBand.setStrokeWidth(2);
     targetBand.setStroke(Color.web("#0F6177"));
+
     pane.getChildren().addAll(target, targetBand);
   }
 
   /**
-   * Controls the animation
+   * Controls the animation, 60 fps.
    *
    * @param size the amount of rockets.
-   * @param span     lifespan of the rockets.
+   * @param span lifespan of the rockets.
    **/
   private void launch(int size, int span) {
     System.out.println("Launching");
@@ -152,7 +158,6 @@ public class Launch extends Application {
       public void handle(long now) {
 
         inf.setText(Integer.toString(gen));
-        //animate each frame
         int count = 0;
         for (int j = 0; j < span; j++) {
           swarm.update(pane, count);

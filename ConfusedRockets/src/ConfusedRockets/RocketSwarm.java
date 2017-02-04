@@ -1,6 +1,5 @@
 package ConfusedRockets;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -14,9 +13,8 @@ import java.util.stream.Stream;
  * RocketSwarm contains the Rocket objects
  */
 public class RocketSwarm {
-  private List<Rocket> rocketStore;
-
   private static final Random rnd = new Random();
+  private List<Rocket> rocketStore;
 
 
   /**
@@ -32,15 +30,16 @@ public class RocketSwarm {
 
   /**
    * Initialises a rocket population.
-   * @param size The number of rockets to be included in the population
-   * @param span The lifespan of the rockets (will be the gene sequence length)
+   *
+   * @param size  The number of rockets to be included in the population
+   * @param span  The lifespan of the rockets (will be the gene sequence length)
    * @param force The magnitude of the forces which represent the rocket's DNA
    * @return A list that contains randomly initialised rockets
    */
   private List<Rocket> createPopulation(int size, int span, int force) {
     return Stream.generate(() -> new Rocket(new DNA(span, force)))
-                 .limit(size)
-                 .collect(Collectors.toList());
+        .limit(size)
+        .collect(Collectors.toList());
   }
 
   /**
