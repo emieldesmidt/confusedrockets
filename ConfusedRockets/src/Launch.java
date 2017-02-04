@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 
@@ -40,8 +41,9 @@ public class Launch extends Application {
     BorderPane border = new BorderPane();
     pane = new Pane();
     pane.setStyle("-fx-background-color: #1BBC9B");
-    pane.setPrefSize(1000, 600);
+    pane.setPrefSize(1200, 800);
     pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> createTarget(event.getX(), event.getY()));
+
     border.setCenter(pane);
 
     border.setBottom(createHBox());
@@ -49,7 +51,7 @@ public class Launch extends Application {
     stage.setTitle("Confused Rockets");
     stage.setScene(new Scene(border));
 
-
+    stage.setResizable(false);
     stage.show();
 
   }
@@ -125,7 +127,6 @@ public class Launch extends Application {
   private void launch(int genCount, int span) {
     System.out.println("Launching");
     RocketSwarm swarm = new RocketSwarm(100, span, 10);
-
 
     for (int i = 0; i < genCount + 1; i++) {
       //animate each frame
