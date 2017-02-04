@@ -1,3 +1,4 @@
+import ConfusedRockets.Rocket;
 import ConfusedRockets.RocketSwarm;
 import ConfusedRockets.Vector2D;
 import javafx.animation.AnimationTimer;
@@ -16,6 +17,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+
+import java.util.Collection;
 
 
 /**
@@ -162,6 +165,8 @@ public class Launch extends Application {
         inf.setText(Integer.toString(gen));
         int count = 0;
         for (int j = 0; j < span; j++) {
+          //remove the old rockets, update them, draw them again.
+          pane.getChildren().removeAll(swarm.getRocketStore());
           swarm.update(pane, count);
           count++;
         }

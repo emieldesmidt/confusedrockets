@@ -28,6 +28,10 @@ public class RocketSwarm {
     rocketStore = createPopulation(size, span, force);
   }
 
+  public List<Rocket> getRocketStore() {
+    return rocketStore;
+  }
+
   /**
    * Initialises a rocket population.
    *
