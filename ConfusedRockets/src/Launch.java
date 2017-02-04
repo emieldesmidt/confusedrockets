@@ -151,46 +151,14 @@ public class Launch extends Application {
     pane.getChildren().addAll(target, targetBand);
   }
 
-  /**
-   * Controls the animation, 60 fps.
-   *
-   * @param size the amount of rockets.
-   * @param span lifespan of the rockets.
 
-  private void launch2(int size, int span) {
-    System.out.println("Launching");
-    RocketSwarm swarm = new RocketSwarm(size, span, 10);
-
-    new AnimationTimer() {
-
-      //this is similar to a loop, with a maximum of 60 loops/second
-      //each loop is equivalent to a generation
-      @Override
-      public void handle(long now) {
-
-        inf.setText(Integer.toString(gen));
-        int count = 0;
-        for (int j = 0; j < span; j++) {
-          //remove the old rockets, update them, draw them again.
-          swarm.update(pane, count);
-          count++;
-
-        }
-        //at the end of the population's lifespan, generate a new population.
-        swarm.breed(0.01, targetPos);
-
-        gen++;
-
-
-      }
-    }.start();
-  }
-  **/
 
   private void launch(int size, int span) {
     RocketSwarm swarm = new RocketSwarm(size, span, 1);
+    inf.setText("0");
     AnimationTimer timer = new AnimationTimer() {
       int t = 0;
+      int g = 0;
 
       @Override
       public void handle(long now) {
@@ -202,6 +170,11 @@ public class Launch extends Application {
           }
           t++;
           count++;
+        } else {
+          swarm.breed(0.01, targetPos);
+          inf.setText(Integer.toString(g));
+          g++;
+          t = 0;
         }
       }
     };
