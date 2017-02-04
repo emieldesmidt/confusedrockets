@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ public class Launch extends Application {
   private Vector2D targetPos = new Vector2D();
   private Pane pane;
   private Circle target = new Circle();
+  private Circle targetBand;
 
   public static void main(String[] args) {
     launch(args);
@@ -37,7 +39,7 @@ public class Launch extends Application {
   public void start(Stage stage) {
     BorderPane border = new BorderPane();
     pane = new Pane();
-    pane.setStyle("-fx-background-color: white");
+    pane.setStyle("-fx-background-color: #1BBC9B");
     pane.setPrefSize(1000, 600);
     pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> createTarget(event.getX(), event.getY()));
     border.setCenter(pane);
@@ -60,7 +62,7 @@ public class Launch extends Application {
    */
   private HBox createHBox() {
     HBox hb = new HBox();
-    hb.setStyle("-fx-background-color: aliceblue");
+    hb.setStyle("-fx-background-color: #16A086");
     hb.setSpacing(20);
     hb.setPadding(new Insets(10, 10, 10, 10));
     hb.setAlignment(Pos.BOTTOM_RIGHT);
@@ -102,10 +104,16 @@ public class Launch extends Application {
 
   //create a target object on the desired position.
   private void createTarget(double x, double y) {
-    pane.getChildren().remove(target);
+    pane.getChildren().removeAll(target, targetBand);
     targetPos = new Vector2D(x, y);
     target = new Circle(targetPos.x(), targetPos.y(), 6);
-    pane.getChildren().add(target);
+    target.setFill(Color.web("#0F6177"));
+
+    targetBand = new Circle(targetPos.x(), targetPos.y(), 10);
+    targetBand.setFill(Color.TRANSPARENT);
+    targetBand.setStrokeWidth(2);
+    targetBand.setStroke(Color.web("#0F6177"));
+    pane.getChildren().addAll(target, targetBand);
   }
 
   /**
