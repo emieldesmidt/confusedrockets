@@ -151,7 +151,6 @@ public class Launch extends Application {
   }
 
 
-
   private void launch(int size, int span) {
     RocketSwarm swarm = new RocketSwarm(size, span, 1);
     inf.setText("0");
@@ -163,6 +162,9 @@ public class Launch extends Application {
       public void handle(long now) {
 
         if (t < span) {
+
+          pane.getChildren().retainAll(inf, target);
+
           for (Rocket r : swarm.getRocketStore()) {
             r.update(count);
             r.draw(pane);
