@@ -1,10 +1,13 @@
 import ConfusedRockets.RocketSwarm;
 import ConfusedRockets.Vector2D;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -12,7 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 
@@ -26,6 +28,9 @@ public class Launch extends Application {
   private Pane pane;
   private Circle target = new Circle();
   private Circle targetBand;
+  private Label inf;
+  private  int gen = 0;
+
 
   public static void main(String[] args) {
     launch(args);
@@ -39,13 +44,7 @@ public class Launch extends Application {
   @Override
   public void start(Stage stage) {
     BorderPane border = new BorderPane();
-    pane = new Pane();
-    pane.setStyle("-fx-background-color: #1BBC9B");
-    pane.setPrefSize(1200, 800);
-    pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> createTarget(event.getX(), event.getY()));
-
-    border.setCenter(pane);
-
+    border.setCenter(createPane());
     border.setBottom(createHBox());
 
     stage.setTitle("Confused Rockets");
@@ -54,6 +53,25 @@ public class Launch extends Application {
     stage.setResizable(false);
     stage.show();
 
+  }
+
+  /**
+   * Create the canvas of the simulation.
+   *
+   * @return pane.
+   */
+  private Node createPane() {
+    pane = new Pane();
+    pane.setStyle("-fx-background-color: #1BBC9B");
+    pane.setPrefSize(1200, 800);
+    pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> createTarget(event.getX(), event.getY()));
+
+    inf = new Label();
+    inf.setStyle("-fx-text-fill: #16A086; -fx-font-size: 100");
+    inf.setTranslateY(-20);
+    inf.setTranslateX(20);
+    pane.getChildren().add(inf);
+    return pane;
   }
 
 
@@ -69,13 +87,13 @@ public class Launch extends Application {
     hb.setPadding(new Insets(10, 10, 10, 10));
     hb.setAlignment(Pos.BOTTOM_RIGHT);
     Button launchButton = new Button("Launch");
-    TextField genCount = new TextField();
-    genCount.setPromptText("Generations");
+    TextField rocketCount = new TextField();
+    rocketCount.setPromptText("Rockets");
 
     //to ensure that the user only puts integer values.
-    genCount.textProperty().addListener((observable, oldValue, newValue) -> {
+    rocketCount.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.matches("\\d*")) {
-        genCount.setText(newValue.replaceAll("[^\\d]", ""));
+        rocketCount.setText(newValue.replaceAll("[^\\d]", ""));
       }
     });
 
@@ -88,12 +106,12 @@ public class Launch extends Application {
       }
     });
 
-    hb.getChildren().addAll(lifeSpan, genCount, launchButton);
+    hb.getChildren().addAll(lifeSpan, rocketCount, launchButton);
 
     //add event handler to the button, and verify user input. Then launch the swarm!
     launchButton.setOnAction(e -> {
-      if (!genCount.getText().isEmpty() && !lifeSpan.getText().isEmpty()) {
-        int genVal = Integer.parseInt(genCount.getText());
+      if (!rocketCount.getText().isEmpty() && !lifeSpan.getText().isEmpty()) {
+        int genVal = Integer.parseInt(rocketCount.getText());
         int span = Integer.parseInt(lifeSpan.getText());
         if (genVal > 0) {
           launch(genVal, span);
@@ -121,23 +139,31 @@ public class Launch extends Application {
   /**
    * Controls the animation
    *
-   * @param genCount the amount of generations that it should loop through.
+   * @param size the amount of rockets.
    * @param span     lifespan of the rockets.
    **/
-  private void launch(int genCount, int span) {
+  private void launch(int size, int span) {
     System.out.println("Launching");
-    RocketSwarm swarm = new RocketSwarm(100, span, 10);
+    RocketSwarm swarm = new RocketSwarm(size, span, 10);
 
-    for (int i = 0; i < genCount + 1; i++) {
-      //animate each frame
-      int count = 0;
-      for (int j = 0; j < span; j++) {
-        swarm.update(pane, count);
-        count++;
+    new AnimationTimer() {
+
+      @Override
+      public void handle(long now) {
+
+        inf.setText(Integer.toString(gen));
+        //animate each frame
+        int count = 0;
+        for (int j = 0; j < span; j++) {
+          swarm.update(pane, count);
+          count++;
+        }
+        //at the end of the population's lifespan, generate a new population.
+        swarm.breed(0.01, targetPos);
+
+        gen++;
       }
-      //at the end of the population's lifespan, generate a new population.
-      swarm.breed(0.01, targetPos);
-    }
+    }.start();
   }
 
 }
