@@ -21,9 +21,8 @@ import javafx.stage.Stage;
  */
 public class Launch extends Application {
 
-  private int count;
-  private boolean targetSet = false;
   private Vector2D targetPos = new Vector2D();
+
 
   public static void main(String[] args) {
     launch(args);
@@ -84,12 +83,12 @@ public class Launch extends Application {
 
     //create a target object on the desired position.
     canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-      if (!targetSet) {
-        gc.setFill(Color.DARKBLUE);
-        gc.fillOval(event.getSceneX(), event.getSceneY(), 20, 20);
-        targetPos = new Vector2D(event.getSceneX(), event.getSceneY());
-        targetSet = true;
-      }
+
+      gc.clearRect(targetPos.x(), targetPos.y(), 12, 12);
+      gc.setFill(Color.DARKBLUE);
+      gc.fillOval(event.getSceneX(), event.getSceneY(), 12, 12);
+      targetPos = new Vector2D(event.getSceneX(), event.getSceneY());
+
     });
 
     stage.show();
@@ -110,7 +109,7 @@ public class Launch extends Application {
 
     for (int i = 0; i < genCount + 1; i++) {
       //animate each frame
-      count = 0;
+      int count = 0;
       for (int j = 0; j < span; j++) {
         swarm.update(gc, count);
         count++;
