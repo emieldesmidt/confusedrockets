@@ -30,6 +30,7 @@ public class Launch extends Application {
   private Circle targetBand;
   private Label inf;
   private int gen = 0;
+  private Button launchButton;
 
 
   public static void main(String[] args) {
@@ -88,8 +89,8 @@ public class Launch extends Application {
     hb.setSpacing(20);
     hb.setPadding(new Insets(10, 10, 10, 10));
     hb.setAlignment(Pos.BOTTOM_RIGHT);
-    Button launchButton = new Button("Launch");
-
+    launchButton = new Button("Launch");
+    launchButton.setDisable(true);
     TextField rocketCount = new TextField();
     rocketCount.setPromptText("Rockets");
     //to ensure that the user only puts integer values.
@@ -126,6 +127,7 @@ public class Launch extends Application {
 
   //create a target object on the desired position.
   private void createTarget(double x, double y) {
+    launchButton.setDisable(false);
     //remove the previous target
     pane.getChildren().removeAll(target, targetBand);
 

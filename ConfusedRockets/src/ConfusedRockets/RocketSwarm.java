@@ -40,7 +40,9 @@ public class RocketSwarm {
     return Stream.generate(() -> new Rocket(new DNA(span, force)))
         .limit(size)
         .collect(Collectors.toList());
+
   }
+
 
   /**
    * Method that replaces the current population with a new generation.
