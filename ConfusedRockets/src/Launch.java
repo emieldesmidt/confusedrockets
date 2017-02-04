@@ -154,6 +154,7 @@ public class Launch extends Application {
   private void launch(int size, int span) {
     RocketSwarm swarm = new RocketSwarm(size, span, 1);
     inf.setText("0");
+    
     AnimationTimer timer = new AnimationTimer() {
       int t = 0;
       int g = 0;
@@ -163,7 +164,7 @@ public class Launch extends Application {
 
         if (t < span) {
 
-          pane.getChildren().retainAll(inf, target);
+          pane.getChildren().retainAll(inf, target, targetBand);
 
           for (Rocket r : swarm.getRocketStore()) {
             r.update(t);

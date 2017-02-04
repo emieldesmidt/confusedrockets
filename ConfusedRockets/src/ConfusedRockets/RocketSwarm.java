@@ -24,7 +24,7 @@ public class RocketSwarm {
    * @param span  the lifespan of the rockets.
    * @param force the force of the rockets.
    */
-  public RocketSwarm(int size, int span, int force) {
+  public RocketSwarm(int size, int span, double force) {
     rocketStore = createPopulation(size, span, force);
   }
 
@@ -40,7 +40,7 @@ public class RocketSwarm {
    * @param force The magnitude of the forces which represent the rocket's DNA
    * @return A list that contains randomly initialised rockets
    */
-  private List<Rocket> createPopulation(int size, int span, int force) {
+  private List<Rocket> createPopulation(int size, int span, double force) {
     return Stream.generate(() -> new Rocket(new DNA(span, force)))
         .limit(size)
         .collect(Collectors.toList());

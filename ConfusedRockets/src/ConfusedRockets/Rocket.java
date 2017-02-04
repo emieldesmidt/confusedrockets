@@ -95,7 +95,7 @@ public class Rocket {
 
   //Draw the rocket on the canvas
   public void draw(Pane pane) {
-    Rectangle rocket = new Rectangle(this.mPosition.x(), this.mPosition.y(), 3, 12);
+    Rectangle rocket = new Rectangle(this.mPosition.x(), this.mPosition.y(), 2, 8);
     rocket.setFill(Color.web("#0F6177"));
     pane.getChildren().add(rocket);
   }
