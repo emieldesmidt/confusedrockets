@@ -1,7 +1,5 @@
 package ConfusedRockets;
 
-import javafx.scene.layout.Pane;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -82,11 +80,4 @@ public class RocketSwarm {
     }
   }
 
-  //updates all the rockets
-  public void update(Pane pane, int count) {
-    for (Rocket rocket : this.rocketStore) {
-      rocket.update(count);
-      rocket.draw(pane);
-    }
-  }
 }
