@@ -2,7 +2,7 @@ package ConfusedRockets;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Ellipse;
 
 /**
  * Represents the rocket which will evolve until it reaches its goal. The genetic algorithm will
@@ -95,8 +95,8 @@ public class Rocket {
 
   //Draw the rocket on the canvas
   public void draw(Pane pane) {
-    Rectangle rocket = new Rectangle(this.mPosition.x(), this.mPosition.y(), 2, 8);
-    rocket.setFill(Color.web("#0F6177"));
+    Ellipse rocket = new Ellipse(this.mPosition.x(), this.mPosition.y(), 2, 2);
+    rocket.setFill(Color.rgb(15, 97, 199));
     pane.getChildren().add(rocket);
   }
 }

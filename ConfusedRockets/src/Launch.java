@@ -33,7 +33,6 @@ public class Launch extends Application {
   private Button launchButton;
   private double targX = 600;
   private double targY = 50;
-  private int count = 0;
 
   public static void main(String[] args) {
     launch(args);
@@ -49,7 +48,6 @@ public class Launch extends Application {
     BorderPane border = new BorderPane();
     border.setCenter(createPane());
     border.setBottom(createHBox());
-
     stage.setTitle("Confused Rockets");
     stage.setScene(new Scene(border));
     createTarget();
@@ -154,7 +152,7 @@ public class Launch extends Application {
   private void launch(int size, int span) {
     RocketSwarm swarm = new RocketSwarm(size, span, 1);
     inf.setText("0");
-    
+
     AnimationTimer timer = new AnimationTimer() {
       int t = 0;
       int g = 0;
