@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import ConfusedRockets.*;
 
 public class Vector2DTest {
-    private static final double eps = 1E-6;
+    private static final double EPS = 1E-10;
 
     @Test
     public void x() throws Exception {
@@ -83,9 +83,9 @@ public class Vector2DTest {
     }
 
     private boolean equal(double a, double b) {
-        return (Math.abs(a-b) < eps);
+        return (Math.abs(a-b) < EPS);
     }
     private boolean equal(Vector2D a, Vector2D b) {
-        return (Math.abs(a.x()-b.x()) < eps & Math.abs(a.y() - b.y()) < eps);
+        return (Math.abs(a.x()-b.x()) < EPS & Math.abs(a.y() - b.y()) < EPS);
     }
 }

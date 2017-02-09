@@ -91,4 +91,9 @@ public class Vector2D {
   public Vector2D normalised() {
     return new Vector2D(x(), y()).scale(1.0 / magnitude());
   }
+
+  @Override
+  public String toString() {
+    return "{" + x() + ", " + y() + "}";
+  }
 }

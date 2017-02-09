@@ -83,4 +83,8 @@ public class DNA implements Cloneable {
 
     return new DNA(newGenes);
   }
+
+  public static double getMutationThreshold() {
+    return mutationThreshold;
+  }
 }
