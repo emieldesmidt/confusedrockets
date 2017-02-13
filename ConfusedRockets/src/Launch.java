@@ -10,13 +10,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -33,6 +38,10 @@ public class Launch extends Application {
   private Button launchButton;
   private double targX = 600;
   private double targY = 50;
+  private double obsStartX;
+  private double obsStartY;
+  private double obsEndX;
+  private ArrayList<Rectangle> obstacleStore = new ArrayList<>();
 
   public static void main(String[] args) {
     launch(args);
@@ -66,9 +75,21 @@ public class Launch extends Application {
     pane.setStyle("-fx-background-color: #1BBC9B");
     pane.setPrefSize(1200, 800);
     pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-      targX = event.getX();
-      targY = event.getY();
-      createTarget();
+      if (event.getButton() == MouseButton.SECONDARY) {
+        targX = event.getX();
+        targY = event.getY();
+        createTarget();
+      }
+    });
+
+    pane.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+      obsStartX = event.getX();
+      obsStartY = event.getY();
+    });
+
+    pane.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+      obsEndX = event.getX();
+      createObs();
     });
 
     //The generation stat label (left top)
@@ -79,6 +100,14 @@ public class Launch extends Application {
     pane.getChildren().add(inf);
 
     return pane;
+  }
+
+  private void createObs() {
+    Rectangle obs = new Rectangle(obsStartX, obsStartY, obsEndX - obsStartX, 12);
+    obs.setFill(Color.web("#0F6177"));
+    obstacleStore.add(obs);
+    pane.getChildren().retainAll(inf, target, targetBand);
+    pane.getChildren().addAll(obstacleStore);
   }
 
 
@@ -163,6 +192,8 @@ public class Launch extends Application {
         if (t < span) {
 
           pane.getChildren().retainAll(inf, target, targetBand);
+          pane.getChildren().addAll(obstacleStore);
+
 
           for (Rocket r : swarm.getRocketStore()) {
             r.update(t);
