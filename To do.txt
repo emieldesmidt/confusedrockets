@@ -2,3 +2,6 @@
 - Finish Rocket class         (major)
 - Add tests for Rocket class  (minor)
 - Add tests for DNA class     (minor)
+- Check for crashes           (major)
+- Threads for performance     (minor)
+- Make time a factor          (major)
