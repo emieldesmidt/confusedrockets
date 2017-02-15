@@ -1,8 +1,6 @@
 package ConfusedRockets;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,6 +10,7 @@ import java.util.stream.Stream;
  */
 public class RocketSwarm {
   private static final Random rnd = new Random();
+  private static final int matingPoolSizePerRocket = 10;
   private List<Rocket> rocketStore;
 
 
@@ -56,10 +55,20 @@ public class RocketSwarm {
      * Replaces the mating pool with new rockets.
      * Rockets with the highest fitness levels will be present significantly more often.
      */
-    ArrayList<Rocket> matingPool = new ArrayList<Rocket>();
+
+    // First store the fitness levels of each rocket in a map
+    Map<Rocket, Double> fitnessLevels = new HashMap<>();
     for (Rocket r : rocketStore) {
-      double n = r.getFitness(targetPos) * 100;
-      for (int i = 0; i < n; i++) {
+      fitnessLevels.put(r, r.getFitness(targetPos));
+    }
+
+    // Normalise the fitness levels of the rockets. Each rockets will now have a number assigned to it which represents
+    // the number of occurences of that rocket in the mating pool
+    Map<Rocket, Integer> normalisedFitnessLevels = normaliseMapValues(fitnessLevels, matingPoolSizePerRocket * rocketStore.size());
+
+    List<Rocket> matingPool = new ArrayList<>();
+    for (Rocket r: normalisedFitnessLevels.keySet()) {
+      for (int i = 0; i < normalisedFitnessLevels.get(r); i++) {
         matingPool.add(r);
       }
     }
@@ -78,6 +87,44 @@ public class RocketSwarm {
       Rocket mother = matingPool.get(p2);
       rocketStore.add(father.mate(mother));
     }
+  }
+
+  /**
+   * Normalises the map values from double to integer. The map values will stay the same relative to each other, but
+   * they will sum up the the given size of the new map.
+   * @param currentMap Map containing the relative values
+   * @param sizeOfNewMap Size of the normalised map
+   * @return Normalised (Object, Integer) map
+   * @example normaliseMapValues({Object1: 0.5, Object2: 0.1, Object3: 1.0}, 16) will give
+   * {Object1: 5, Object2: 1, Object3: 10}.
+   */
+  private Map<Rocket, Integer> normaliseMapValues(Map<Rocket, Double> currentMap, int sizeOfNewMap) {
+    Map<Rocket, Integer> normalisedMap = new HashMap<>();
+
+    double totalValue = 0;
+    for (Rocket r: currentMap.keySet()) {
+      totalValue += currentMap.get(r);
+    }
+
+    // Start fill spaces in the new map (preserving relative values) until it is full
+    int totalSpacesToFill = sizeOfNewMap;
+
+    for (Rocket r: currentMap.keySet()) {
+      if (totalSpacesToFill == 0) {
+        break;
+      }
+
+      double relValue = currentMap.get(r);
+      int spacesToFill = (int)((relValue/totalValue) * totalSpacesToFill);
+      normalisedMap.put(r, spacesToFill);
+
+      totalValue -= relValue;
+      totalSpacesToFill -= spacesToFill;
+    }
+
+    assert(normalisedMap.size() == sizeOfNewMap);
+
+    return normalisedMap;
   }
 
 }

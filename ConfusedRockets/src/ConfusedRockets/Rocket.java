@@ -59,7 +59,7 @@ public class Rocket {
     double dist = Vector2D.distance(mPosition, targetPos);
 
     // Turn the distance into a fitness metric
-    double fitness = Math.exp(-dist);
+    double fitness = Math.exp(-dist/10.0);
 
     switch (mStatus) {
       case COMPLETED:
