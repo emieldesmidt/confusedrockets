@@ -4,6 +4,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * Represents the rocket which will evolve until it reaches its goal. The genetic algorithm will
  * be run on these rockets where the DNA of the rockets will be used as parameters to be altered.
@@ -96,7 +98,17 @@ public class Rocket {
   //Draw the rocket on the canvas
   public void draw(Pane pane) {
     Ellipse rocket = new Ellipse(this.mPosition.x(), this.mPosition.y(), 2, 2);
-    rocket.setFill(Color.rgb(15, 97, 199));
+
+    switch (mStatus) {
+      case COMPLETED:
+        rocket.setFill(Color.web("#97CE68"));
+        break;
+      case CRASHED:
+        rocket.setFill(Color.web("#E3000E"));
+        break;
+      default:
+        rocket.setFill(Color.web("#1DABB8"));
+    }
     pane.getChildren().add(rocket);
   }
 }

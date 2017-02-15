@@ -72,7 +72,7 @@ public class Launch extends Application {
    */
   private Node createPane() {
     pane = new Pane();
-    pane.setStyle("-fx-background-color: #1BBC9B");
+    pane.setStyle("-fx-background-color: #282830");
     pane.setPrefSize(1200, 800);
     pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
       if (event.getButton() == MouseButton.SECONDARY) {
@@ -94,7 +94,7 @@ public class Launch extends Application {
 
     //The generation stat label (left top)
     inf = new Label();
-    inf.setStyle("-fx-text-fill: #16A086; -fx-font-size: 100");
+    inf.setStyle("-fx-text-fill: #25373D; -fx-font-size: 100");
     inf.setTranslateY(-20);
     inf.setTranslateX(20);
     pane.getChildren().add(inf);
@@ -118,7 +118,7 @@ public class Launch extends Application {
    */
   private HBox createHBox() {
     HBox hb = new HBox();
-    hb.setStyle("-fx-background-color: #16A086");
+    hb.setStyle("-fx-background-color: #3E4651");
     hb.setSpacing(20);
     hb.setPadding(new Insets(10, 10, 10, 10));
     hb.setAlignment(Pos.BOTTOM_RIGHT);
