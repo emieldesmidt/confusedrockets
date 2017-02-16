@@ -2,9 +2,12 @@ package ConfusedRockets;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Rectangle;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.List;
 
 /**
  * Represents the rocket which will evolve until it reaches its goal. The genetic algorithm will
@@ -88,28 +91,64 @@ public class Rocket {
     return new Rocket(childGenes);
   }
 
-  public void update(int count) {
+  public void update(int count, List<Rectangle> obstacles, Circle target) {
+    if (getStatus() == RocketStatus.COMPLETED || getStatus() == RocketStatus.CRASHED) {
+      return;
+    }
+
+    // Save the current position in case the rocket collides or finishes
+    Vector2D oldPosition = getPosition();
+
     this.applyForce(this.getGenes().getGene(count));
     this.mVelocity = this.mVelocity.add(this.mAcceleration);
     this.mPosition = this.mPosition.add(this.mVelocity);
     this.mAcceleration = this.mAcceleration.scale(0);
+
+    // If the rocket collides with any of the obstacles, change its status and freeze it
+    if (this.collides(obstacles)) {
+      this.mStatus = RocketStatus.CRASHED;
+      this.mPosition = oldPosition;
+      this.mVelocity = Vector2D.ZERO;
+      this.mAcceleration = Vector2D.ZERO;
+    }
+
+    // If the rockets has reached its target, change its status and freeze it
+    if (this.targetReached(target)) {
+      this.mStatus = RocketStatus.COMPLETED;
+      this.mPosition = oldPosition;
+      this.mVelocity = Vector2D.ZERO;
+      this.mAcceleration = Vector2D.ZERO;
+    }
   }
 
-  //Draw the rocket on the canvas
-  public void draw(Pane pane) {
-    Ellipse rocket = new Ellipse(this.mPosition.x(), this.mPosition.y(), 2, 2);
+  public Vector2D getPosition() {
+    return mPosition;
+  }
 
-    switch (mStatus) {
-      case COMPLETED:
-        rocket.setFill(Color.web("#97CE68"));
-        break;
-      case CRASHED:
-        rocket.setFill(Color.web("#E3000E"));
-        break;
-      default:
-        rocket.setFill(Color.web("#1DABB8"));
+  public RocketStatus getStatus() {
+    return mStatus;
+  }
+
+  private boolean collides(List<Rectangle> obstacles) {
+    for (Rectangle r: obstacles) {
+      double x = getPosition().x();
+      double y = getPosition().y();
+
+      // Rocket collides if it is inside an obstacle
+      if (x >= r.getX() && x <= r.getX() + r.getWidth() && y >= r.getY() && y <= r.getY() + r.getHeight()) {
+        return true;
+      }
     }
-    pane.getChildren().add(rocket);
+
+    return false;
+  }
+
+  private boolean targetReached(Circle target) {
+    // If the rocket is closer to the target center than the target radius, than it has reached its target
+    if (Vector2D.distance(getPosition(), new Vector2D(target.getCenterX(), target.getCenterY())) < target.getRadius()) {
+      return true;
+    }
+    return false;
   }
 }
 

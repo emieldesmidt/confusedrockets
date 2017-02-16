@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -38,6 +39,7 @@ public class Launch extends Application {
   private Button launchButton;
   private double targX = 600;
   private double targY = 50;
+  private double targRadius = 6;
   private double obsStartX;
   private double obsStartY;
   private double obsEndX;
@@ -165,11 +167,11 @@ public class Launch extends Application {
     pane.getChildren().removeAll(target, targetBand);
 
     targetPos = new Vector2D(targX, targY);
-    target = new Circle(targetPos.x(), targetPos.y(), 6);
+    target = new Circle(targetPos.x(), targetPos.y(), targRadius);
     target.setFill(Color.web("#0F6177"));
 
     //outer ring of the target
-    targetBand = new Circle(targetPos.x(), targetPos.y(), 10);
+    targetBand = new Circle(targetPos.x(), targetPos.y(), 2*targRadius);
     targetBand.setFill(Color.TRANSPARENT);
     targetBand.setStrokeWidth(2);
     targetBand.setStroke(Color.web("#0F6177"));
@@ -196,8 +198,8 @@ public class Launch extends Application {
 
 
           for (Rocket r : swarm.getRocketStore()) {
-            r.update(t);
-            r.draw(pane);
+            r.update(t, obstacleStore, new Circle(targX,  targY, targRadius));
+            drawRocket(r);
           }
           t++;
 
@@ -213,4 +215,20 @@ public class Launch extends Application {
     timer.start();
   }
 
+  //Draw the rocket on the canvas
+  public void drawRocket(Rocket r) {
+    Ellipse rocket = new Ellipse(r.getPosition().x(), r.getPosition().y(), 2, 2);
+
+    switch (r.getStatus()) {
+      case COMPLETED:
+        rocket.setFill(Color.web("#97CE68"));
+        break;
+      case CRASHED:
+        rocket.setFill(Color.web("#E3000E"));
+        break;
+      default:
+        rocket.setFill(Color.web("#1DABB8"));
+    }
+    pane.getChildren().add(rocket);
+  }
 }
