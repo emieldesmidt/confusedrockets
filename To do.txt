@@ -4,5 +4,4 @@
 - Add tests for DNA class     		(minor)
 - Threads for performance     		(minor)
 - Make time a factor          		(major)
-- Rocket passes through obstacle check	(major)
 - Score for finished rockets		(minor)
