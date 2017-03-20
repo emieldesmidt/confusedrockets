@@ -1,7 +1,9 @@
 import ConfusedRockets.Rocket;
+import ConfusedRockets.RocketStatus;
 import ConfusedRockets.RocketSwarm;
 import ConfusedRockets.Vector2D;
 import javafx.animation.AnimationTimer;
+import javafx.animation.Interpolatable;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -36,6 +38,7 @@ public class Launch extends Application {
   private Circle target = new Circle();
   private Circle targetBand;
   private Label inf;
+  private Label score;
   private Button launchButton;
   private double targX = 600;
   private double targY = 50;
@@ -43,6 +46,7 @@ public class Launch extends Application {
   private double obsStartX;
   private double obsStartY;
   private double obsEndX;
+  private Rectangle boundaries = new Rectangle(1200, 800);
   private ArrayList<Rectangle> obstacleStore = new ArrayList<>();
 
   public static void main(String[] args) {
@@ -75,7 +79,7 @@ public class Launch extends Application {
   private Node createPane() {
     pane = new Pane();
     pane.setStyle("-fx-background-color: #282830");
-    pane.setPrefSize(1200, 800);
+    pane.setPrefSize(boundaries.getWidth(), boundaries.getHeight());
     pane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
       if (event.getButton() == MouseButton.SECONDARY) {
         targX = event.getX();
@@ -101,6 +105,13 @@ public class Launch extends Application {
     inf.setTranslateX(20);
     pane.getChildren().add(inf);
 
+    //The score stat label (left top)
+    score = new Label();
+    score.setStyle("-fx-text-fill: #25373D; -fx-font-size: 35");
+    score.setTranslateY(80);
+    score.setTranslateX(20);
+    pane.getChildren().add(score);
+
     return pane;
   }
 
@@ -108,7 +119,7 @@ public class Launch extends Application {
     Rectangle obs = new Rectangle(obsStartX, obsStartY, obsEndX - obsStartX, 12);
     obs.setFill(Color.web("#0F6177"));
     obstacleStore.add(obs);
-    pane.getChildren().retainAll(inf, target, targetBand);
+    pane.getChildren().retainAll(inf, score, target, targetBand);
     pane.getChildren().addAll(obstacleStore);
   }
 
@@ -183,6 +194,7 @@ public class Launch extends Application {
   private void launch(int size, int span) {
     RocketSwarm swarm = new RocketSwarm(size, span, 1);
     inf.setText("0");
+    score.setText("0/0");
 
     AnimationTimer timer = new AnimationTimer() {
       int t = 0;
@@ -193,15 +205,19 @@ public class Launch extends Application {
 
         if (t < span) {
 
-          pane.getChildren().retainAll(inf, target, targetBand);
+          pane.getChildren().retainAll(inf, score, target, targetBand);
           pane.getChildren().addAll(obstacleStore);
 
-
+          int finishedRockets = 0;
           for (Rocket r : swarm.getRocketStore()) {
-            r.update(t, obstacleStore, new Circle(targX,  targY, targRadius));
+            r.update(t, obstacleStore, new Circle(targX,  targY, targRadius), boundaries);
             drawRocket(r);
+            if (r.getStatus() == RocketStatus.COMPLETED) {
+              finishedRockets++;
+            }
           }
           t++;
+          score.setText(Integer.toString(finishedRockets) + "/" + Integer.toString(swarm.getRocketStore().size()));
 
         } else {
           swarm.breed(0.01, targetPos);

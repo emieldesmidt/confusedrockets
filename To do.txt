@@ -3,5 +3,3 @@
 - Add tests for Rocket class  		(minor)
 - Add tests for DNA class     		(minor)
 - Threads for performance     		(minor)
-- Make time a factor          		(major)
-- Score for finished rockets		(minor)

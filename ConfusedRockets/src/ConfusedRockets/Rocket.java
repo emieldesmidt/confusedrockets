@@ -22,6 +22,7 @@ public class Rocket {
   private Vector2D mAcceleration;
   private RocketStatus mStatus = RocketStatus.FLYING;
   private DNA mGenes;
+  private int timeOfFlight;
 
   /**
    * Rocket constructor:
@@ -64,11 +65,12 @@ public class Rocket {
     double dist = Vector2D.distance(mPosition, targetPos);
 
     // Turn the distance into a fitness metric
-    double fitness = Math.exp(-dist/10.0);
+    double fitness = Math.exp(-dist/100.0);
 
     switch (mStatus) {
       case COMPLETED:
         fitness *= completeMultiplier;
+        //fitness *= 10.0/timeOfFlight;
         break;
       case CRASHED:
         fitness *= crashMultiplier;
@@ -91,7 +93,7 @@ public class Rocket {
     return new Rocket(childGenes);
   }
 
-  public void update(int count, List<Rectangle> obstacles, Circle target) {
+  public void update(int count, List<Rectangle> obstacles, Circle target, Rectangle boundaries) {
     if (getStatus() == RocketStatus.COMPLETED || getStatus() == RocketStatus.CRASHED) {
       return;
     }
@@ -104,21 +106,23 @@ public class Rocket {
     this.mPosition = this.mPosition.add(this.mVelocity);
     this.mAcceleration = this.mAcceleration.scale(0);
 
-    // If the rocket collides with any of the obstacles, change its status and freeze it
-    if (this.collides(obstacles, oldPosition, mPosition)) {
+    if (this.targetReached(target)) {
+      // If the rockets has reached its target, change its status and freeze it
+      this.mStatus = RocketStatus.COMPLETED;
+      this.mPosition = oldPosition;
+      this.mVelocity = Vector2D.ZERO;
+      this.mAcceleration = Vector2D.ZERO;
+    } else if (this.collides(obstacles, oldPosition, mPosition) | this.outOfBounds(boundaries)) {
+      // If the rocket collides with any of the obstacles or is out of bounds, change its status and freeze it
       this.mStatus = RocketStatus.CRASHED;
       this.mPosition = oldPosition;
       this.mVelocity = Vector2D.ZERO;
       this.mAcceleration = Vector2D.ZERO;
     }
 
-    // If the rockets has reached its target, change its status and freeze it
-    if (this.targetReached(target)) {
-      this.mStatus = RocketStatus.COMPLETED;
-      this.mPosition = oldPosition;
-      this.mVelocity = Vector2D.ZERO;
-      this.mAcceleration = Vector2D.ZERO;
-    }
+
+
+    timeOfFlight++;
   }
 
   public Vector2D getPosition() {
@@ -127,6 +131,10 @@ public class Rocket {
 
   public RocketStatus getStatus() {
     return mStatus;
+  }
+
+  public int getTimeOfFlight() {
+    return timeOfFlight;
   }
 
   private static boolean collides(List<Rectangle> obstacles, Vector2D oldPosition, Vector2D newPosition) {
@@ -222,6 +230,11 @@ public class Rocket {
       return true;
     }
     return false;
+  }
+
+  private boolean outOfBounds(Rectangle bounds) {
+    return (mPosition.x() < bounds.getX() | mPosition.x() > bounds.getX() + bounds.getWidth() |
+            mPosition.y() < bounds.getY() | mPosition.y() > bounds.getY() + bounds.getHeight());
   }
 }
 
